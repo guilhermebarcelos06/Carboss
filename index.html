@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CarBoss - Pátio Brasil | Estética Automotiva</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #e01c24;
+    --red-dark: #a01018;
+    --red-glow: rgba(224,28,36,0.35);
+    --black: #080808;
+    --black2: #111111;
+    --black3: #1a1a1a;
+    --white: #f5f5f5;
+    --gray: #888;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE TEXTURE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999; opacity: .4;
+  }
+
+  /* ─── NAVBAR ─── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 5%;
+    background: linear-gradient(to bottom, rgba(8,8,8,.95), transparent);
+    backdrop-filter: blur(4px);
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .nav-logo img {
+    width: 52px; height: 52px; border-radius: 50%;
+    border: 2px solid var(--red);
+    box-shadow: 0 0 16px var(--red-glow);
+  }
+
+  .nav-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; letter-spacing: 2px;
+    color: var(--white);
+  }
+
+  .nav-brand span { color: var(--red); }
+
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+
+  .nav-links a {
+    text-decoration: none; color: var(--gray);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: .85rem; letter-spacing: 2px;
+    text-transform: uppercase; transition: color .3s;
+  }
+
+  .nav-links a:hover { color: var(--red); }
+
+  .nav-cta {
+    background: var(--red); color: #fff !important;
+    padding: 8px 20px; border-radius: 2px;
+  }
+
+  .nav-cta:hover { background: var(--red-dark); color: #fff !important; }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: grid; place-items: center;
+    position: relative; overflow: hidden;
+    padding: 120px 5% 80px;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 50%, rgba(224,28,36,.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(224,28,36,.06) 0%, transparent 60%);
+  }
+
+  /* animated grid lines */
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(224,28,36,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(224,28,36,.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridMove 20s linear infinite;
+  }
+
+  @keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 60px 60px; }
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 700px;
+    animation: fadeUp .9s ease both;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(224,28,36,.15); border: 1px solid rgba(224,28,36,.4);
+    padding: 6px 16px; border-radius: 2px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .75rem; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--red); margin-bottom: 24px;
+  }
+
+  .hero-badge::before { content: '★★★★★'; font-size: .7rem; }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    line-height: .95; letter-spacing: 2px;
+    margin-bottom: 24px;
+  }
+
+  h1 .accent { color: var(--red); }
+
+  .hero-sub {
+    font-size: 1.1rem; color: var(--gray);
+    line-height: 1.7; max-width: 480px;
+    margin-bottom: 40px;
+  }
+
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--red); color: #fff;
+    padding: 16px 32px; border-radius: 2px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1rem; letter-spacing: 2px;
+    text-transform: uppercase; text-decoration: none;
+    transition: all .3s; border: none; cursor: pointer;
+    box-shadow: 0 0 30px var(--red-glow);
+  }
+
+  .btn-primary:hover {
+    background: var(--red-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 40px var(--red-glow);
+  }
+
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: transparent; color: var(--white);
+    padding: 15px 32px; border-radius: 2px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1rem; letter-spacing: 2px;
+    text-transform: uppercase; text-decoration: none;
+    transition: all .3s; border: 1px solid rgba(255,255,255,.2);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--red); color: var(--red);
+    transform: translateY(-2px);
+  }
+
+  .hero-stats {
+    position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 32px;
+    z-index: 2; animation: fadeLeft 1s ease .3s both;
+  }
+
+  .stat-card {
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.08);
+    border-left: 3px solid var(--red);
+    padding: 20px 24px; min-width: 140px;
+    backdrop-filter: blur(10px);
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem; color: var(--red);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .7rem; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--gray);
+    margin-top: 4px;
+  }
+
+  .scroll-hint {
+    position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: var(--gray); font-size: .7rem; letter-spacing: 3px;
+    text-transform: uppercase; animation: bounce 2s ease infinite;
+  }
+
+  .scroll-hint::after {
+    content: ''; display: block;
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--red), transparent);
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* ─── SECTION STYLES ─── */
+  section { padding: 100px 5%; }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .7rem; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--red); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .section-label::before {
+    content: ''; display: block;
+    width: 32px; height: 2px; background: var(--red);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1; letter-spacing: 2px;
+    margin-bottom: 20px;
+  }
+
+  .section-title span { color: var(--red); }
+
+  /* ─── SERVICES ─── */
+  #servicos { background: var(--black2); }
+
+  .services-intro {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 60px; margin-bottom: 70px; align-items: end;
+  }
+
+  .services-desc {
+    color: var(--gray); line-height: 1.8; font-size: 1.05rem;
+    padding-top: 16px;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 2px;
+  }
+
+  .service-card {
+    background: var(--black3);
+    padding: 32px 28px;
+    border-bottom: 2px solid transparent;
+    transition: all .4s; cursor: default;
+    position: relative; overflow: hidden;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--red);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .4s;
+  }
+
+  .service-card:hover { background: #1e1e1e; transform: translateY(-4px); }
+  .service-card:hover::before { transform: scaleX(1); }
+
+  .service-icon {
+    font-size: 2rem; margin-bottom: 16px;
+    display: block;
+  }
+
+  .service-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1.1rem; letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .service-desc {
+    font-size: .85rem; color: var(--gray); line-height: 1.6;
+  }
+
+  /* ─── GALLERY ─── */
+  #galeria { background: var(--black); }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 260px);
+    gap: 4px; margin-top: 60px;
+  }
+
+  .gallery-item {
+    position: relative; overflow: hidden; cursor: pointer;
+    background: var(--black3);
+  }
+
+  .gallery-item:first-child {
+    grid-column: span 2; grid-row: span 2;
+  }
+
+  .gallery-item img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    transition: transform .6s ease, filter .4s;
+    filter: brightness(.85) saturate(.9);
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.06);
+    filter: brightness(1) saturate(1.1);
+  }
+
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(224,28,36,.6) 0%, transparent 50%);
+    opacity: 0; transition: opacity .4s;
+    display: flex; align-items: flex-end; padding: 20px;
+  }
+
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+  .gallery-car-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem; letter-spacing: 2px; color: #fff;
+  }
+
+  /* Car SVG placeholder backgrounds */
+  .car-mercedes { background: linear-gradient(135deg,#222,#111); }
+  .car-byd { background: linear-gradient(135deg,#1a1a1a,#0d0d0d); }
+  .car-bmw { background: linear-gradient(135deg,#1c1c1c,#121212); }
+  .car-porsche { background: linear-gradient(135deg,#1e2020,#0e1010); }
+
+  /* ─── ABOUT / LOCATION ─── */
+  #sobre { background: var(--black2); }
+
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center; margin-top: 60px;
+  }
+
+  .about-visual {
+    position: relative;
+  }
+
+  .about-logo-wrap {
+    width: 280px; height: 280px; margin: auto;
+    position: relative;
+  }
+
+  .about-logo-wrap img {
+    width: 100%; height: 100%; border-radius: 50%;
+    border: 3px solid var(--red);
+    box-shadow: 0 0 60px var(--red-glow), 0 0 120px rgba(224,28,36,.1);
+    animation: pulse 3s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 60px var(--red-glow), 0 0 120px rgba(224,28,36,.1); }
+    50% { box-shadow: 0 0 80px rgba(224,28,36,.5), 0 0 160px rgba(224,28,36,.15); }
+  }
+
+  .about-ring {
+    position: absolute; inset: -20px;
+    border-radius: 50%;
+    border: 1px dashed rgba(224,28,36,.3);
+    animation: spin 20s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .about-info { display: flex; flex-direction: column; gap: 28px; }
+
+  .about-text {
+    color: var(--gray); line-height: 1.8; font-size: 1.05rem;
+  }
+
+  .info-row {
+    display: flex; align-items: flex-start; gap: 16px;
+    padding: 20px;
+    background: rgba(255,255,255,.03);
+    border-left: 3px solid var(--red);
+  }
+
+  .info-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+
+  .info-text strong {
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1rem; letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .info-text span { font-size: .9rem; color: var(--gray); }
+
+  /* ─── HOURS ─── */
+  #horarios { background: var(--black); }
+
+  .hours-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 2px; margin-top: 60px;
+  }
+
+  .hour-card {
+    padding: 28px 20px; text-align: center;
+    background: var(--black3); position: relative;
+  }
+
+  .hour-card.open { border-top: 2px solid var(--red); }
+  .hour-card.closed { border-top: 2px solid #333; opacity: .5; }
+
+  .hour-day {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: .75rem; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--gray); margin-bottom: 10px;
+  }
+
+  .hour-time {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem; letter-spacing: 1px;
+    color: var(--white);
+  }
+
+  .hour-card.closed .hour-time { color: var(--gray); }
+
+  .open-badge {
+    display: inline-block; margin-top: 8px;
+    background: rgba(0,200,80,.15); border: 1px solid rgba(0,200,80,.3);
+    color: #00c850; font-size: .65rem; letter-spacing: 2px;
+    text-transform: uppercase; padding: 3px 8px; border-radius: 1px;
+    font-family: 'Barlow Condensed', sans-serif;
+  }
+
+  /* ─── CTA STRIP ─── */
+  #contato {
+    background: var(--red);
+    padding: 80px 5%;
+    position: relative; overflow: hidden;
+  }
+
+  #contato::before {
+    content: 'CARBOSS';
+    position: absolute; right: -2%; top: 50%; transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16rem; color: rgba(0,0,0,.12);
+    pointer-events: none; white-space: nowrap;
+    line-height: 1;
+  }
+
+  .cta-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 40px; flex-wrap: wrap; position: relative; z-index: 2;
+  }
+
+  .cta-text h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    letter-spacing: 2px; line-height: 1;
+  }
+
+  .cta-text p {
+    margin-top: 8px; font-size: 1.05rem;
+    opacity: .85;
+  }
+
+  .cta-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  .btn-white {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #fff; color: var(--red);
+    padding: 16px 32px; border-radius: 2px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1rem; letter-spacing: 2px;
+    text-transform: uppercase; text-decoration: none;
+    transition: all .3s;
+  }
+
+  .btn-white:hover { background: var(--black); color: #fff; transform: translateY(-2px); }
+
+  .btn-outline-white {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: transparent; color: #fff;
+    padding: 15px 32px; border-radius: 2px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 1rem; letter-spacing: 2px;
+    text-transform: uppercase; text-decoration: none;
+    border: 2px solid rgba(255,255,255,.6);
+    transition: all .3s;
+  }
+
+  .btn-outline-white:hover {
+    border-color: #fff; background: rgba(255,255,255,.1);
+    transform: translateY(-2px);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--black2); padding: 50px 5% 30px;
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr;
+    gap: 60px; margin-bottom: 40px;
+  }
+
+  .footer-brand img {
+    width: 80px; height: 80px; border-radius: 50%;
+    border: 2px solid var(--red); margin-bottom: 16px;
+  }
+
+  .footer-brand p {
+    color: var(--gray); font-size: .9rem; line-height: 1.7;
+    max-width: 300px;
+  }
+
+  .footer-col h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    font-size: .8rem; color: var(--red); margin-bottom: 20px;
+  }
+
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col ul li { font-size: .9rem; color: var(--gray); }
+
+  .footer-social { display: flex; gap: 12px; margin-top: 20px; }
+
+  .social-btn {
+    width: 44px; height: 44px; border-radius: 2px;
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+    display: grid; place-items: center;
+    text-decoration: none; color: var(--gray); font-size: 1.1rem;
+    transition: all .3s;
+  }
+
+  .social-btn:hover {
+    background: var(--red); border-color: var(--red); color: #fff;
+    transform: translateY(-3px);
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,.06);
+    padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+  }
+
+  .footer-bottom p { font-size: .8rem; color: #555; }
+  .footer-bottom span { color: var(--red); }
+
+  /* ─── FLOATING WHATSAPP ─── */
+  .whatsapp-float {
+    position: fixed; bottom: 28px; right: 28px; z-index: 500;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: #25d366;
+    display: grid; place-items: center;
+    box-shadow: 0 4px 24px rgba(37,211,102,.4);
+    text-decoration: none; color: #fff; font-size: 1.7rem;
+    transition: all .3s; animation: waPulse 2.5s ease infinite;
+  }
+
+  .whatsapp-float:hover {
+    transform: scale(1.1) translateY(-3px);
+    box-shadow: 0 8px 40px rgba(37,211,102,.6);
+    animation: none;
+  }
+
+  @keyframes waPulse {
+    0%, 100% { box-shadow: 0 4px 24px rgba(37,211,102,.4); }
+    50% { box-shadow: 0 4px 40px rgba(37,211,102,.7); }
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeLeft {
+    from { opacity: 0; transform: translateY(-50%) translateX(40px); }
+    to { opacity: 1; transform: translateY(-50%) translateX(0); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .hero-stats { display: none; }
+    .services-intro { grid-template-columns: 1fr; gap: 20px; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .gallery-item:first-child { grid-column: span 2; grid-row: span 1; height: 240px; }
+    .gallery-item { height: 180px; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .about-logo-wrap { width: 200px; height: 200px; }
+    .cta-inner { flex-direction: column; text-align: center; }
+    .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  @media (max-width: 600px) {
+    .gallery-grid { grid-template-columns: 1fr; }
+    .gallery-item:first-child { grid-column: span 1; }
+    .hero-btns { flex-direction: column; }
+    .cta-btns { flex-direction: column; width: 100%; }
+    .btn-white, .btn-outline-white { justify-content: center; }
+  }
+
+  /* Stars rating */
+  .stars { color: #f5a623; font-size: .9rem; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img src="/mnt/user-data/uploads/214942.png" alt="CarBoss Logo">
+    <span class="nav-brand">Car<span>Boss</span></span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#galeria">Galeria</a></li>
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#horarios">Horários</a></li>
+    <li><a href="https://wa.me/c/556199741358" target="_blank" class="nav-cta">Agendar</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">Estética Automotiva Premium · Pátio Brasil</div>
+    <h1>SEU CARRO<br>MERECE O<br><span class="accent">MELHOR.</span></h1>
+    <p class="hero-sub">Tratamentos premium para veículos de luxo e alto padrão. Localizado no coração de Brasília, no Pátio Brasil Shopping.</p>
+    <div class="hero-btns">
+      <a href="https://wa.me/c/556199741358" target="_blank" class="btn-primary">
+        📱 Agendar pelo WhatsApp
+      </a>
+      <a href="#servicos" class="btn-secondary">
+        Ver Serviços →
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-card">
+      <div class="stat-num">4.5</div>
+      <div class="stat-label">⭐ Google</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">34+</div>
+      <div class="stat-label">Avaliações</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">22+</div>
+      <div class="stat-label">Serviços</div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">scroll</div>
+</section>
+
+<!-- SERVICES -->
+<section id="servicos">
+  <div class="services-intro reveal">
+    <div>
+      <div class="section-label">O que fazemos</div>
+      <h2 class="section-title">NOSSOS<br><span>SERVIÇOS</span></h2>
+    </div>
+    <p class="services-desc">
+      Oferecemos mais de 22 tipos de tratamentos especializados para o seu veículo, do básico ao luxo. Cada carro é tratado com cuidado e atenção aos detalhes que ele merece.
+    </p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <span class="service-icon">🚿</span>
+      <div class="service-name">Eco-Lavagem</div>
+      <div class="service-desc">Lavagem sustentável com mínimo de água e máximo de resultado.</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">✨</span>
+      <div class="service-name">Polimento</div>
+      <div class="service-desc">Acabamento espelhado que revela o brilho original da pintura.</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🛡️</span>
+      <div class="service-name">Vitrificação de Pintura</div>
+      <div class="service-desc">Proteção de longa duração contra agentes externos e oxidação.</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🪑</span>
+      <div class="service-name">Higienização Interna</div>
+      <div class="service-desc">Limpeza profunda de couro, camurça, carpetes e revestimentos.</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🔦</span>
+      <div class="service-name">Restauração de Farol</div>
+      <div class="service-desc">Revitalização de faróis amarelados para máxima visibilidade.</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🌀</span>
+      <div class="service-name">Remoção de Arranhões</div>
+      <div class="service-desc">Correção de micro-riscos e imperfeições na pintura.</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">❄️</span>
+      <div class="service-name">Limpeza de A/C</div>
+      <div class="service-desc">Higienização do sistema de ar-condicionado para um ar mais puro.</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🚗</span>
+      <div class="service-name">Lavagem de Motor</div>
+      <div class="service-desc">Limpeza segura e eficiente do compartimento do motor.</div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="galeria">
+  <div class="reveal">
+    <div class="section-label">Nosso trabalho</div>
+    <h2 class="section-title">CARROS QUE<br><span>PASSARAM POR NÓS</span></h2>
+  </div>
+
+  <div class="gallery-grid reveal">
+    <div class="gallery-item car-mercedes">
+      <!-- Mercedes placeholder with CSS art -->
+      <div style="width:100%;height:100%;display:grid;place-items:center;background:linear-gradient(135deg,#1a1a1a 0%,#0d0d0d 100%);">
+        <div style="text-align:center;color:#555;">
+          <div style="font-size:5rem;">🏎️</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#888;letter-spacing:3px;">MERCEDES-BENZ</div>
+          <div style="font-size:.8rem;color:#555;letter-spacing:2px;margin-top:4px;">CLASSE A · BRANCO</div>
+        </div>
+      </div>
+      <div class="gallery-overlay"><div class="gallery-car-label">Mercedes-Benz Classe A</div></div>
+    </div>
+    <div class="gallery-item car-byd">
+      <div style="width:100%;height:100%;display:grid;place-items:center;background:linear-gradient(135deg,#161616 0%,#0a0a0a 100%);">
+        <div style="text-align:center;color:#555;">
+          <div style="font-size:3.5rem;">🚙</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:#888;letter-spacing:3px;">BYD SONG</div>
+          <div style="font-size:.7rem;color:#555;letter-spacing:2px;margin-top:4px;">SUV ELÉTRICO · BRANCO</div>
+        </div>
+      </div>
+      <div class="gallery-overlay"><div class="gallery-car-label">BYD Song</div></div>
+    </div>
+    <div class="gallery-item car-bmw">
+      <div style="width:100%;height:100%;display:grid;place-items:center;background:linear-gradient(135deg,#141414 0%,#080808 100%);">
+        <div style="text-align:center;color:#555;">
+          <div style="font-size:3.5rem;">🚗</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:#888;letter-spacing:3px;">BMW X2</div>
+          <div style="font-size:.7rem;color:#555;letter-spacing:2px;margin-top:4px;">M SPORT · CINZA</div>
+        </div>
+      </div>
+      <div class="gallery-overlay"><div class="gallery-car-label">BMW X2 M Sport</div></div>
+    </div>
+    <div class="gallery-item car-porsche">
+      <div style="width:100%;height:100%;display:grid;place-items:center;background:linear-gradient(135deg,#0e1212 0%,#080e0e 100%);">
+        <div style="text-align:center;color:#555;">
+          <div style="font-size:3.5rem;">🏁</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:#888;letter-spacing:3px;">PORSCHE 911</div>
+          <div style="font-size:.7rem;color:#555;letter-spacing:2px;margin-top:4px;">AZUL BEBÊ</div>
+        </div>
+      </div>
+      <div class="gallery-overlay"><div class="gallery-car-label">Porsche 911</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT / LOCATION -->
+<section id="sobre">
+  <div class="about-grid">
+    <div class="about-visual reveal">
+      <div class="about-logo-wrap">
+        <div class="about-ring"></div>
+        <img src="/mnt/user-data/uploads/214942.png" alt="CarBoss Logo">
+      </div>
+    </div>
+    <div class="about-info reveal">
+      <div>
+        <div class="section-label">Quem somos</div>
+        <h2 class="section-title">CARBOSS<br><span>PÁTIO BRASIL</span></h2>
+      </div>
+      <p class="about-text">
+        Somos especialistas em estética automotiva de alto padrão, localizados no subsolo do Pátio Brasil Shopping, em Brasília. Atendemos veículos das mais conceituadas marcas com dedicação, técnica e produtos premium.
+      </p>
+      <div class="info-row">
+        <span class="info-icon">📍</span>
+        <div class="info-text">
+          <strong>Endereço</strong>
+          <span>SCS Q. 6 · Subsolo Garagem G2 · Pátio Brasil Shopping · Asa Sul, Brasília – DF</span>
+        </div>
+      </div>
+      <div class="info-row">
+        <span class="info-icon">⭐</span>
+        <div class="info-text">
+          <strong>Avaliação Google</strong>
+          <span class="stars">★★★★½</span> <span>4,5 · (34 avaliações)</span>
+        </div>
+      </div>
+      <div class="info-row">
+        <span class="info-icon">📞</span>
+        <div class="info-text">
+          <strong>WhatsApp</strong>
+          <span>(61) 9974-1358</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOURS -->
+<section id="horarios">
+  <div class="reveal" style="text-align:center;">
+    <div class="section-label" style="justify-content:center;">
+      <div style="width:32px;height:2px;background:var(--red)"></div>
+      Funcionamento
+      <div style="width:32px;height:2px;background:var(--red)"></div>
+    </div>
+    <h2 class="section-title">HORÁRIO DE<br><span>ATENDIMENTO</span></h2>
+  </div>
+
+  <div class="hours-grid reveal">
+    <div class="hour-card closed">
+      <div class="hour-day">Domingo</div>
+      <div class="hour-time">Fechado</div>
+    </div>
+    <div class="hour-card open">
+      <div class="hour-day">Segunda</div>
+      <div class="hour-time">8h – 19h</div>
+      <div class="open-badge">Aberto</div>
+    </div>
+    <div class="hour-card open">
+      <div class="hour-day">Terça</div>
+      <div class="hour-time">8h – 19h</div>
+      <div class="open-badge">Aberto</div>
+    </div>
+    <div class="hour-card open">
+      <div class="hour-day">Quarta</div>
+      <div class="hour-time">8h – 19h</div>
+      <div class="open-badge">Aberto</div>
+    </div>
+    <div class="hour-card open">
+      <div class="hour-day">Quinta</div>
+      <div class="hour-time">8h – 19h</div>
+      <div class="open-badge">Aberto</div>
+    </div>
+    <div class="hour-card open">
+      <div class="hour-day">Sexta</div>
+      <div class="hour-time">8h – 19h</div>
+      <div class="open-badge">Aberto</div>
+    </div>
+    <div class="hour-card open">
+      <div class="hour-day">Sábado</div>
+      <div class="hour-time">9h – 18h</div>
+      <div class="open-badge">Aberto</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="contato">
+  <div class="cta-inner">
+    <div class="cta-text">
+      <h2>AGENDE AGORA<br>SEM COMPROMISSO</h2>
+      <p>Fale conosco pelo WhatsApp ou nos siga no Instagram.</p>
+    </div>
+    <div class="cta-btns">
+      <a href="https://wa.me/c/556199741358" target="_blank" class="btn-white">
+        📱 WhatsApp
+      </a>
+      <a href="https://www.instagram.com/carboss_patio_brasil" target="_blank" class="btn-outline-white">
+        📸 Instagram
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="/mnt/user-data/uploads/214942.png" alt="CarBoss">
+      <p>Estética automotiva premium no coração de Brasília. Seu carro merece o melhor tratamento.</p>
+      <div class="footer-social">
+        <a href="https://wa.me/c/556199741358" target="_blank" class="social-btn" title="WhatsApp">📱</a>
+        <a href="https://www.instagram.com/carboss_patio_brasil" target="_blank" class="social-btn" title="Instagram">📸</a>
+        <a href="https://maps.google.com" target="_blank" class="social-btn" title="Maps">📍</a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Serviços</h4>
+      <ul>
+        <li>Eco-Lavagem</li>
+        <li>Polimento</li>
+        <li>Vitrificação</li>
+        <li>Higienização</li>
+        <li>Rest. de Farol</li>
+        <li>Limpeza de Motor</li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <ul>
+        <li>📍 Pátio Brasil, G2</li>
+        <li>🕐 Seg–Sex 8h–19h</li>
+        <li>🕐 Sáb 9h–18h</li>
+        <li>⭐ 4,5 no Google</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 <span>CarBoss Pátio Brasil</span>. Todos os direitos reservados.</p>
+    <p>Estética Automotiva em <span>Brasília – DF</span></p>
+  </div>
+</footer>
+
+<!-- FLOATING WHATSAPP -->
+<a href="https://wa.me/c/556199741358" target="_blank" class="whatsapp-float" title="Chamar no WhatsApp">
+  💬
+</a>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, 80 * (Array.from(entry.target.parentElement?.children || []).indexOf(entry.target)));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Navbar scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 80) {
+      nav.style.background = 'rgba(8,8,8,.97)';
+      nav.style.backdropFilter = 'blur(12px)';
+      nav.style.borderBottom = '1px solid rgba(224,28,36,.15)';
+    } else {
+      nav.style.background = 'linear-gradient(to bottom, rgba(8,8,8,.95), transparent)';
+      nav.style.borderBottom = 'none';
+    }
+  });
+</script>
+
+</body>
+</html>
